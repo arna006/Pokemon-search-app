@@ -30,20 +30,20 @@
         const resultDiv = document.getElementById("resultDiv");
         const url = "https://pokeapi.co/api/v2/pokemon/";
 
-       async function showPokemons() {
-    const searchValue = searchInput.value.toLowerCase().trim();
-    if (!searchValue) {
-        resultDiv.innerHTML = "<p>Please enter a Pokemon name or ID.</p>";
-        return;
-    }
+        async function showPokemons() {
+            const searchValue = searchInput.value.toLowerCase().trim();
+            if (!searchValue) {
+                resultDiv.innerHTML = "<p>Please enter a Pokemon name or ID.</p>";
+                return;
+            }
 
-    try {
-        const response = await fetch(url + searchValue);
-        if (!response.ok) {
-            throw new Error("Pokemon not found");
-        }
-        const pokemon = await response.json();
-        resultDiv.innerHTML = `
+            try {
+                const response = await fetch(url + searchValue);
+                if (!response.ok) {
+                    throw new Error("Pokemon not found");
+                }
+                const pokemon = await response.json();
+                resultDiv.innerHTML = `
             <div class="pokemon-card">
                 <h3>${pokemon.name.toUpperCase()}</h3>
                 <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
@@ -55,10 +55,11 @@
                 <p>Speed: ${pokemon.stats.find(stat => stat.stat.name === "speed")?.base_stat || "N/A"}</p>
             </div>
         `;
-    } catch (error) {
-        resultDiv.innerHTML = `<p style="color:red;">${error.message}</p>`;
-    }
-}
+            } catch (error) {
+                alert(error.message);
+                resultDiv.innerHTML = "";
+            }
+        }
     </script>
 
 </body>
