@@ -1,0 +1,92 @@
+Kult prosjektidé! Å bruke Pokémon API (f.eks. [PokeAPI](https://pokeapi.co/)) er en super måte å lære mer om APIer på – det er lett å komme i gang med og gir masse kule data å leke med.
+
+Her er noen tips og prosjektforslag, rangert fra veldig enkel til litt mer utfordrende:
+
+---
+
+### 🔹 1. **Pokémon Oppslagsverk (Pokédex Light)**
+**Beskrivelse:** Lag en enkel nettside eller CLI-app hvor du kan søke opp en Pokémon og få info tilbake.
+**API-kall:** `https://pokeapi.co/api/v2/pokemon/{name}`
+**Vis data som:**
+- Navn
+- Bilde (sprites)
+- Typer (f.eks. "fire", "water")
+- Stats (HP, attack, etc.)
+
+**Utfordring + bonus:**
+- Legg til en dropdown med forslag/autofullfør
+- Vis farger eller ikoner for typer
+
+---
+
+### 🔹 2. **"Hvem er den Pokémonen?" spill**
+**Beskrivelse:** Vis et skjult bilde (f.eks. silhuett) av en Pokémon og la brukeren gjette hvem det er.
+**Hvordan:**
+- Bruk sprites fra APIet
+- Maskér bildet med CSS eller JS
+- Avslør når brukeren gjetter eller klikker "Vis svar"
+
+---
+
+### 🔹 3. **Sammenlign Pokémon**
+**Beskrivelse:** La brukeren velge to Pokémon og sammenlign stats, typer og vekt/høyde.
+**API-kall:** To kall til `pokemon/{name}`
+**Presentasjon:** Bruk diagrammer eller tabeller
+
+---
+
+### 🔹 4. **Team Builder**
+**Beskrivelse:** Brukeren kan velge opptil 6 Pokémon og få en oversikt over laget sitt.
+- Hvilke typer dekker laget?
+- Er det svake punkter (f.eks. alle er svake mot "water")?
+- Du kan bruke type-effektivitet fra `https://pokeapi.co/api/v2/type/{type}`
+
+---
+
+### 🔹 5. **Filtrering og søk**
+**Beskrivelse:** Lag et søkefelt og filtre (f.eks. etter type, vekt, stats)
+- Hent flere Pokémon samtidig (paginering)
+- Bruk `https://pokeapi.co/api/v2/pokemon?limit=100&offset=0`
+
+---
+
+### Teknologier å vurdere
+- Frontend: HTML/CSS/JS, React, Vue, eller bare Vanilla JS for enkelhet
+- Backend (valgfritt): Express, Flask, eller FastAPI hvis du vil lære API-håndtering bakover
+- Deployment: GitHub Pages, Vercel, Netlify
+
+---
+
+Vil du at jeg skal hjelpe deg med å sette opp et første eksempel eller wireframe for et av disse forslagene? 😊
+
+
+
+
+
+function searchPokemon() {
+            const nameOrId = document.getElementById("searchTxt").value.toLowerCase().trim();
+            const resultDiv = document.getElementById("resultDiv");
+
+            if (!nameOrId) {
+                resultDiv.innerHTML = "Please enter a Pokemon name or ID.";
+                return;
+            }
+
+            fetch("https://pokeapi.co/api/v2/pokemon/" + nameOrId)
+                .then(response => {
+                    if (!response.ok) throw new Error("Pokemon not found!");
+                    return response.json();
+                })
+                .then(data => {
+                    resultDiv.innerHTML = `
+                        <h2>${data.name.toUpperCase()}</h2>
+                        <img src="${data.sprites.front_default}" alt="${data.name}">
+                        <p>Height: ${data.height}</p>
+                        <p>Weight: ${data.weight}</p>
+                    `;
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = error.message;
+                });
+        }
+    </script>
