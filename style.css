@@ -116,3 +116,11 @@ h1, h2 {
       left: 290px;
     }
   }
+
+  #ash-style-png{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 350px;
+
+  }
