@@ -30,23 +30,21 @@
         const resultDiv = document.getElementById("resultDiv");
         const url = "https://pokeapi.co/api/v2/pokemon/";
 
-        function showPokemons() {
-            const searchValue = searchInput.value.toLowerCase().trim();
-            if (!searchValue) {
-                resultDiv.innerHTML = "<p>Please enter a Pokemon name or ID.</p>";
-                return;
-            }
+       async function showPokemons() {
+    const searchValue = searchInput.value.toLowerCase().trim();
+    if (!searchValue) {
+        resultDiv.innerHTML = "<p>Please enter a Pokemon name or ID.</p>";
+        return;
+    }
 
-            fetch(url + searchValue)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Pokemon not found");
-                    }
-                    return response.json();
-                })
-                .then(pokemon => {
-                    resultDiv.innerHTML = `
-              <div class="pokemon-card">
+    try {
+        const response = await fetch(url + searchValue);
+        if (!response.ok) {
+            throw new Error("Pokemon not found");
+        }
+        const pokemon = await response.json();
+        resultDiv.innerHTML = `
+            <div class="pokemon-card">
                 <h3>${pokemon.name.toUpperCase()}</h3>
                 <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
                 <p>Height: ${pokemon.height}</p>
@@ -55,13 +53,12 @@
                 <p>Strength: ${pokemon.stats.find(stat => stat.stat.name === "attack")?.base_stat || "N/A"}</p>
                 <p>Defense: ${pokemon.stats.find(stat => stat.stat.name === "defense")?.base_stat || "N/A"}</p>
                 <p>Speed: ${pokemon.stats.find(stat => stat.stat.name === "speed")?.base_stat || "N/A"}</p>
-              </div>
-            `;
-                })
-                .catch(error => {
-                    resultDiv.innerHTML = `<p style="color:red;">${error.message}</p>`;
-                });
-        }
+            </div>
+        `;
+    } catch (error) {
+        resultDiv.innerHTML = `<p style="color:red;">${error.message}</p>`;
+    }
+}
     </script>
 
 </body>
