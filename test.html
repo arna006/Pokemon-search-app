@@ -17,11 +17,12 @@
             background-image: url('images/pokemon-world.jpg')
         }
     </style>
+
     <h1>Pokemon API</h1>
     <h2>Welcome to Pokemon World!</h2>
 
-    <input type="text" id="searchTxt" placeholder="Search for a Pokemon..">
-    <input type="button" id="searchBtn" value="Search" onclick="showPokemons()">
+    <input type="text" id="searchTxt" placeholder="Search for a Pokemon.." class="searchTxtStyle">
+    <input type="button" id="searchBtn" value="Search" onclick="showPokemons()" class="searchBtnStyle">
 
     <input type="text-box" id="login-txt" placeholder="Enter your username..">
     <br>
@@ -64,6 +65,7 @@
                 alert(error.message);
                 resultDiv.innerHTML = "";
             }
+
         }
     </script>
 
