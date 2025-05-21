@@ -19,11 +19,18 @@ async function mongodb(){
 mongodb();
 
 
-app.post('register', async (req, res) =>{
-    res.send('POST request received');
+app.post('/register', async (req, res) =>{
+
     // 1. Hent username og password fra req.body
+    const {username, password} = req.body;
+
     // 2. Sett det inn i databasen
+    const db = client.db('pokemonApp');
+    const users = db.collection('users');
+    await users.insertOne({username, password});
+
     // 3. Send tilbake en bekreftelse
+    res.send('POST request received');
 
 })
 
