@@ -1,3 +1,4 @@
+
 const express = require('express');
 const { MongoClient } = require('mongodb');
 
@@ -12,3 +13,7 @@ async function mongodb(){
     console.log('Connected to MongoDB');
 
 }
+
+mongodb();
+
+
