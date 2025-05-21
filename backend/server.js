@@ -17,3 +17,13 @@ async function mongodb(){
 }
 
 mongodb();
+
+
+app.post('register', async (req, res) =>{
+    res.send('POST request received');
+    // 1. Hent username og password fra req.body
+    // 2. Sett det inn i databasen
+    // 3. Send tilbake en bekreftelse
+
+})
+
