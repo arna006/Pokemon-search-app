@@ -12,44 +12,49 @@
 
     <img src="images/ash-pokemon.png" alt="Ash with Pokemon" id="ash-style-png" />
 
-    <style>
-        body {
-            background-image: url('images/pokemon-world.jpg')
-        }
-    </style>
-
     <h1>Pokemon API</h1>
     <h2>Welcome to Pokemon World!</h2>
 
-    <input type="text" id="searchTxt" placeholder="Search for a Pokemon.." class="searchTxtStyle">
-    <input type="button" id="searchBtn" value="Search" onclick="showPokemons()" class="searchBtnStyle">
+    <form id="search-form" onsubmit="event.preventDefault(); showPokemons();">
+        <input type="text" id="searchTxt" placeholder="Search for a Pokemon.." class="searchTxtStyle">
+        <button type="submit" id="searchBtn" class="searchBtnStyle">Search</button>
+    </form>
 
-    <input type="text-box" id="login-txt" placeholder="Enter your username..">
-    <br>
-    <input type="password" id="password-txt" placeholder="Enter your password..">
-    <input type="button" id="login-btn" value="Login" onclick="loginUser()">
+    <form id="login-form">
+        <label for="login-txt">Username:</label>
+        <input type="text" id="login-txt" placeholder="Username" required>
+        <label for="password-txt">Password:</label>
+        <input type="password" id="password-txt" placeholder="Password" required>
+        <button type="button" id="login-btn" onclick="loginUser()">Login</button>
+        <button type="button" id="register-btn">Register</button>
+    </form>
 
     <div id="resultDiv"></div>
 
-    <script>
-        const searchInput = document.getElementById("searchTxt");
-        const resultDiv = document.getElementById("resultDiv");
-        const url = "https://pokeapi.co/api/v2/pokemon/";
+    <script src="scripts.js"></script>
+</body>
 
-        async function showPokemons() {
-            const searchValue = searchInput.value.toLowerCase().trim();
-            if (!searchValue) {
-                resultDiv.innerHTML = "<p>Please enter a Pokemon name or ID.</p>";
-                return;
+</html>
+
+<script>
+    const searchInput = document.getElementById("searchTxt");
+    const resultDiv = document.getElementById("resultDiv");
+    const url = "https://pokeapi.co/api/v2/pokemon/";
+
+    async function showPokemons() {
+        const searchValue = searchInput.value.toLowerCase().trim();
+        if (!searchValue) {
+            resultDiv.innerHTML = "<p>Please enter a Pokemon name or ID.</p>";
+            return;
+        }
+
+        try {
+            const response = await fetch(url + searchValue);
+            if (!response.ok) {
+                throw new Error("Pokemon not found");
             }
-
-            try {
-                const response = await fetch(url + searchValue);
-                if (!response.ok) {
-                    throw new Error("Pokemon not found");
-                }
-                const pokemon = await response.json();
-                resultDiv.innerHTML = `
+            const pokemon = await response.json();
+            resultDiv.innerHTML = `
             <div class="pokemon-card">
                 <h3>${pokemon.name.toUpperCase()}</h3>
                 <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
@@ -61,38 +66,38 @@
                 <p>Speed: ${pokemon.stats.find(stat => stat.stat.name === "speed")?.base_stat || "N/A"}</p>
             </div>
         `;
-            } catch (error) {
-                alert(error.message);
-                resultDiv.innerHTML = "";
-            }
-
+        } catch (error) {
+            alert(error.message);
+            resultDiv.innerHTML = "";
         }
 
-        async function loginUser() {
-            const username = document.getElementById("login-txt").value;
-            const password = document.getElementById("password-txt").value;
+    }
 
-            const response = await fetch("http://localhost:3000/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password })
-            });
+    async function loginUser() {
+        const username = document.getElementById("login-txt").value;
+        const password = document.getElementById("password-txt").value;
 
-            if (response.ok) {
-                const message = await response.text();
-                alert(message); // vis svaret fra serveren
-            } else {
-                const error = await response.text();
-                alert(error); // vis feilmelding
-            }
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        if (response.ok) {
+            const message = await response.text();
+            alert(message); // vis svaret fra serveren
+        } else {
+            const error = await response.text();
+            alert(error); // vis feilmelding
         }
+    }
 
 
 
-    </script>
 
+</script>
 </body>
 
 </html>

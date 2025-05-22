@@ -1,4 +1,6 @@
 body {
+
+    background-image: url('images/pokemon-world.jpg');
     background-color: #282c34;
     color: white;
     font-family: Arial, sans-serif;
@@ -135,4 +137,33 @@ h1, h2 {
     left: 0;
     width: 350px;
 
+  }
+  #login-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  #login-form input, #login-form button {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  #login-form button {
+    background-color: #ffcc00;
+    border: none;
+
+    cursor: pointer;
+  }
+
+  #login-form button:hover {
+    background-color: #ffaa00;
   }
