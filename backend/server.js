@@ -34,3 +34,6 @@ app.post('/register', async (req, res) =>{
 
 })
 
+app.listen(3000, () => {
+    console.log('Serveren kjører på http://localhost:3000');
+  });
