@@ -39,18 +39,23 @@ app.listen(3000, () => {
   });
 
 
-  const {username, password} = req.body;
-
   app.post('/login', async (req, res) =>{
 
-    
+
     // 1. Hent username og password fra req.body
     const {username, password} = req.body;
 
     // 2. Sjekk om brukeren finnes i databasen
     const db = client.db('pokemonApp');
     const users = db.collection('users');
-    const user = await users.findOne({username, password});
+    const user = await users.findOne({username});
+    if (user && user.password === password) {
+        // 3. Send tilbake en bekreftelse
+        res.send('Login successful');
+    } else {
+        res.status(401).send('Invalid username or password');
+    }
+    // 2. Sjekk om brukeren finnes i databasen
 
     // 3. Send tilbake en bekreftelse
     if (user) {
