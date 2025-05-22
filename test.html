@@ -81,11 +81,15 @@
             });
 
             if (response.ok) {
-                // Login OK – vis melding eller redirect
+                const message = await response.text();
+                alert(message); // vis svaret fra serveren
             } else {
-                // Login FEIL – vis feilmelding
+                const error = await response.text();
+                alert(error); // vis feilmelding
             }
         }
+
+
 
     </script>
 
