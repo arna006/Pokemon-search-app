@@ -1,54 +1,71 @@
-const express = require('express');
-const { MongoClient } = require('mongodb');
-
-const app = express();
-app.use(express.json());
-
-// 0. Koble til MongoDB
-const uri = 'mongodb://127.0.0.1:27017';
-const client = new MongoClient(uri);
-
-async function mongodb() {
-  await client.connect();
-  const db = client.db('test');
-  console.log('Connected to MongoDB');
-}
-mongodb();
-
 // REGISTER
 app.post('/register', async (req, res) => {
-  // 1. Hent username og password fra req.body
-  const { username, password } = req.body;
+    try {
+      // 1. Hent username og password fra req.body
+      const { username, password } = req.body;
 
-  // 2. Sett det inn i databasen
-  const db = client.db('pokemonApp');
-  const users = db.collection('users');
-  await users.insertOne({ username, password });
+      // 2. Sjekk at begge feltene er fylt ut
+      if (!username || !password) {
+        return res.status(400).send('Username and password are required');
+      }
 
-  // 3. Send bekreftelse
-  res.send('POST request received');
-});
+      // 3. Koble til databasen
+      const db = client.db('pokemonApp');
+      const users = db.collection('users');
 
-// LOGIN
-app.post('/login', async (req, res) => {
-  // 1. Hent username og password fra req.body
-  const { username, password } = req.body;
+      // 4. Sjekk om brukernavn allerede finnes
+      const existingUser = await users.findOne({ username });
+      if (existingUser) {
+        return res.status(409).send('Username already exists');
+      }
 
-  // 2. Sjekk om brukeren finnes i databasen
-  const db = client.db('pokemonApp');
-  const users = db.collection('users');
-  const user = await users.findOne({ username });
+      // 5. Hash passordet
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-  // 3. Sjekk passord og send bekreftelse
-  if (user && user.password === password) {
-    res.send('Login successful');
-  } else {
-    res.status(401).send('Invalid username or password');
-  }
-});
+      // 6. Sett bruker inn i databasen
+      await users.insertOne({ username, password: hashedPassword });
 
-// START SERVER (skal alltid ligge til slutt!)
-// START SERVER (alltid nederst!)
-    app.listen(3000, () => {
-    console.log('Serveren kjører på http://localhost:3000');
+      // 7. Send bekreftelse
+      res.status(201).send('User registered successfully');
+    } catch (error) {
+      // 8. Håndter eventuelle feil
+      console.error('Error in /register:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+
+  // LOGIN
+  app.post('/login', async (req, res) => {
+    try {
+      // 1. Hent username og password fra req.body
+      const { username, password } = req.body;
+
+      // 2. Sjekk at begge feltene er fylt ut
+      if (!username || !password) {
+        return res.status(400).send('Username and password are required');
+      }
+
+      // 3. Koble til databasen og hent bruker
+      const db = client.db('pokemonApp');
+      const users = db.collection('users');
+      const user = await users.findOne({ username });
+
+      // 4. Hvis bruker ikke finnes
+      if (!user) {
+        return res.status(401).send('Invalid username or password');
+      }
+
+      // 5. Sammenlign hashet passord
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).send('Invalid username or password');
+      }
+
+      // 6. Innlogging OK
+      res.send('Login successful');
+    } catch (error) {
+      // 7. Håndter eventuelle feil
+      console.error('Error in /login:', error);
+      res.status(500).send('Internal Server Error');
+    }
   });
