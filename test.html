@@ -67,6 +67,26 @@
             }
 
         }
+
+        async function loginUser() {
+            const username = document.getElementById("login-txt").value;
+            const password = document.getElementById("password-txt").value;
+
+            const response = await fetch("http://localhost:3000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.ok) {
+                // Login OK – vis melding eller redirect
+            } else {
+                // Login FEIL – vis feilmelding
+            }
+        }
+
     </script>
 
 </body>
