@@ -52,4 +52,26 @@ async function loginUser() {
         const error = await response.text();
         alert(error);
     }
+
+}
+
+async function registerUser() {
+    const username = document.getElementById("register-txt").value;
+    const password = document.getElementById("password-txt").value;
+
+    const response = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    });
+
+    if (response.ok) {
+        const message = await response.text();
+        alert(message);
+    } else {
+        const error = await response.text();
+        alert(error);
+    }
 }
