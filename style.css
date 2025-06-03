@@ -139,31 +139,51 @@ h1, h2 {
 
   }
   #login-form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 250px;
-    margin: 20px auto;
+    background: #b6d053; /* Gameboy green */
+    color: #222;
+    border: 3px solid #4a5c2c;
+    border-radius: 0;
+    width: 180px;
+    margin: 30px auto 0 auto;
+    padding: 12px 10px 10px 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
+    gap: 8px;
+    font-family: 'Press Start 2P', monospace;
+    box-shadow: 0 0 0 4px #7e9c3b, 0 0 0 8px #4a5c2c;
+}
 
-  #login-form input, #login-form button {
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+#login-form label {
+    font-size: 0.7em;
+    margin-bottom: 2px;
+}
 
-  #login-form button {
-    background-color: #ffcc00;
-    border: none;
+#login-form input {
+    background: #eaf7c1;
+    border: 2px solid #4a5c2c;
+    color: #222;
+    border-radius: 0;
+    padding: 6px;
+    font-size: 0.9em;
+    font-family: 'Press Start 2P', monospace;
+    margin-bottom: 6px;
+    outline: none;
+}
 
+#login-form button {
+    background: #4a5c2c;
+    color: #eaf7c1;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9em;
+    border: 2px solid #222;
+    border-radius: 0;
+    padding: 7px 0;
+    margin-top: 4px;
     cursor: pointer;
-  }
-
-  #login-form button:hover {
-    background-color: #ffaa00;
-  }
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 1px 1px 0 #222;
+}
+#login-form button:hover {
+    background: #7e9c3b;
+    color: #222;
+}
